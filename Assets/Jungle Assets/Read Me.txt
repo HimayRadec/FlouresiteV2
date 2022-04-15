@@ -1,0 +1,8 @@
+Do not forget to add the diffusion profiles from package to the Diffusion Profile List in HDRP!!!
+
+If you do not do it, you will experimenting a "black screen" or the vegetation will not render property 
+
+The easiest way to do it is selecting any Vegetation material, and in the material properties (down in the diffusion profile box) there must be a FIX button.
+
+Find more information in the Unity Docs: 
+https://docs.unity.cn/Packages/com.unity.render-pipelines.high-definition@9.0/manual/Diffusion-Profile.html

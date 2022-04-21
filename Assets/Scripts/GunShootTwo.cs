@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunShoot : MonoBehaviour
+public class GunShootTwo : MonoBehaviour
 {
     // Drag & Drop the Main Camera into the FPS Cam:____, in the Inspector window
 

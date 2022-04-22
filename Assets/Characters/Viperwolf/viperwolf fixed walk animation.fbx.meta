@@ -1,0 +1,198 @@
+fileFormatVersion: 2
+guid: 5b2229b55726afd41913888e447a544d
+ModelImporter:
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      74: 5988135736300795242
+    second: 'Armature.001| '
+  - first:
+      74: 7721715186239825389
+    second: Armature.001|Action
+  - first:
+      74: -4013538427371677323
+    second: Armature.001|Armature.001|Armature|Action
+  - first:
+      74: -2910645961545332859
+    second: Armature.001|Armature.001|Armature|Armature|Armature|00|Armature|00
+  - first:
+      74: 3016439906670466138
+    second: Armature.001|Armature.001|Armature|Armature|Armature|0|Armature|0
+  - first:
+      74: 8688434765371305358
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Attack_Bite|Armature|At
+  - first:
+      74: -474117381920369348
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Attack_Hit|Armature|Att
+  - first:
+      74: -3288710180162499308
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Default|Armature|Defaul
+  - first:
+      74: 2294675505317204911
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Die_1|Armature|Die_1
+  - first:
+      74: -917178893302459698
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Die_2|Armature|Die_2
+  - first:
+      74: 8012942341660160482
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Idel_Normal|Armature|Id
+  - first:
+      74: -3074146619057561696
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Idle_Aggressive|Armatur
+  - first:
+      74: -8755215524536939189
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Jump|Armature|Jump
+  - first:
+      74: 4714438403996945612
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Rest|Armature|Rest
+  - first:
+      74: 4993476821225372357
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Run-Cycle|Armature|Run-
+  - first:
+      74: 4298584048171971846
+    second: Armature.001|Armature.001|Armature|Armature|Armature|Walk-Cycle|Armature|Wal
+  - first:
+      74: -470515441165059008
+    second: Armature.001|Armature.001|Armature|Attack
+  - first:
+      74: -3813163645692606106
+    second: Armature.001|Armature.001|Armature|run
+  - first:
+      74: 4781290287998271335
+    second: Armature.001|Armature|Armature|00|Armature|00
+  - first:
+      74: -1859148448663380093
+    second: Armature.001|Armature|Armature|0|Armature|0
+  - first:
+      74: -6868088233186215078
+    second: Armature.001|Armature|Armature|Attack_Bite|Armature|Attack_Bite
+  - first:
+      74: 9171237037253834089
+    second: Armature.001|Armature|Armature|Attack_Hit|Armature|Attack_Hit
+  - first:
+      74: -125729746079006152
+    second: Armature.001|Armature|Armature|Default|Armature|Default
+  - first:
+      74: 1546850563324043992
+    second: Armature.001|Armature|Armature|Die_1|Armature|Die_1
+  - first:
+      74: -4754544062342262356
+    second: Armature.001|Armature|Armature|Die_2|Armature|Die_2
+  - first:
+      74: -5655590141536507397
+    second: Armature.001|Armature|Armature|Idel_Normal|Armature|Idel_Normal
+  - first:
+      74: 4960795572437966397
+    second: Armature.001|Armature|Armature|Idle_Aggressive|Armature|Idle_Aggressive
+  - first:
+      74: -6232469933898467966
+    second: Armature.001|Armature|Armature|Jump|Armature|Jump
+  - first:
+      74: -3144593282569222276
+    second: Armature.001|Armature|Armature|Rest|Armature|Rest
+  - first:
+      74: 5328862901058119549
+    second: Armature.001|Armature|Armature|Run-Cycle|Armature|Run-Cycle
+  - first:
+      74: 2580979184100063391
+    second: Armature.001|Armature|Armature|Walk-Cycle|Armature|Walk-Cycle
+  - first:
+      74: 3757268224982703029
+    second: Armature.001|death
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

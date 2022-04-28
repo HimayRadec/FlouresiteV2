@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
-    PlayerUI playerUI;
+    PlayerUIK playerUI;
 
     void Start()
     {
-        playerUI = GetComponent<PlayerUI>();
+        playerUI = GetComponent<PlayerUIK>();
 
         maxHealth = 100;
         currentHealth = maxHealth;

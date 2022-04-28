@@ -9,18 +9,23 @@ public class WeaponSysem : MonoBehaviour
     public float timeBetweenShooting, timeBetweenShots;
     public float reloadTime;
 
-    int ammoLeftInClip, clipSize, maxAmmo;
+    [SerializeField]
+    int clipSize;
+    int ammoLeftInClip, maxAmmo;
 
     bool shooting, readyToShoot, reloading;
 
     public Camera fpsCam;
     public RaycastHit rayHit;
 
+    public LayerMask whatIsEnemy;
+
     // Start is called before the first frame update
     void Awake()
     {
         readyToShoot = true;
         maxAmmo = clipSize * 6;
+        ammoLeftInClip = clipSize;
     }
 
     // Update is called once per frame
@@ -33,12 +38,19 @@ public class WeaponSysem : MonoBehaviour
     {
         if (readyToShoot)
         {
-            readyToShoot = false;
-            // Shoots bullets
-            ammoLeftInClip--;
-            // Resets the bullet shot
-            // Checks if you need to reload
-            if (ammoLeftInClip == 0)
+            Vector3 direction = fpsCam.transform.forward + new Vector3(0, 0, 0);
+            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, whatIsEnemy))
+            {
+                if (rayHit.collider.CompareTag("Enemy"))
+                    rayHit.collider.GetComponent<TargetHit>().TakeDamage(damage);
+
+                Debug.Log("Gun Fired");
+                readyToShoot = false;
+                ammoLeftInClip--;
+                Debug.Log(ammoLeftInClip + "bullets left in the clip");
+            }
+           
+            if (ammoLeftInClip <= 0)
             {
                 Reload();
             } 

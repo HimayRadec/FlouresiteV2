@@ -14,10 +14,15 @@ public class HealthBar : MonoBehaviour
     public Text currentAmmo;
     public Text roundNumber;
     public Text weaponDisplay;
+    public GameObject gun;
 
-
+    public void Awake()
+    {
+        gun.GetComponent<WeaponSysem>();
+    }
     public void SetMaxHealth(int health)
     {
+        
         slider.maxValue = health;
         slider.value = health;
 

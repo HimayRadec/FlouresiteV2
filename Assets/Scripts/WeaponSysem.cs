@@ -8,15 +8,19 @@ public class WeaponSysem : MonoBehaviour
     public int damage;
     public float timeBetweenShooting, timeBetweenShots;
     public float reloadTime;
+    public float range = 100f;
 
     [SerializeField]
-    int clipSize;
-    int ammoLeftInClip, maxAmmo;
+    public int clipSize;
+    public int ammoLeftInClip, maxAmmo;
 
     bool shooting, readyToShoot, reloading;
 
     public Camera fpsCam;
     public RaycastHit rayHit;
+    public ParticleSystem muzzleFlash;
+
+    public HealthBar UI;
 
     public LayerMask whatIsEnemy;
 
@@ -38,8 +42,10 @@ public class WeaponSysem : MonoBehaviour
     {
         if (readyToShoot)
         {
+            muzzleFlash.Play();
+
             Vector3 direction = fpsCam.transform.forward + new Vector3(0, 0, 0);
-            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, whatIsEnemy))
+            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
             {
                 if (rayHit.collider.CompareTag("Enemy"))
                     rayHit.collider.GetComponent<TargetHit>().TakeDamage(damage);

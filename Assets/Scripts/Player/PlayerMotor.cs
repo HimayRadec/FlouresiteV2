@@ -39,7 +39,7 @@ public class PlayerMotor : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -79,6 +79,8 @@ public class PlayerMotor : MonoBehaviour
         Vector3 moveDirection = Vector3.zero;
 
         // forward backward movement
+
+
         moveDirection.x = input.x;
         moveDirection.z = input.y;
         

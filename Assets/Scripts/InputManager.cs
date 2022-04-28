@@ -20,10 +20,12 @@ public class InputManager : MonoBehaviour
         look = GetComponent<PlayerLook>();
 
         // ngl I dont really understand this line of code
-        onFoot.Jump.performed += ctx => motor.Jump();
+        // what i get now is that when this button is clicked it will run the code after "motor."
 
+        onFoot.Jump.performed += ctx => motor.Jump();
         onFoot.Crouch.performed += ctx => motor.Crouch();
         onFoot.Sprint.performed += ctx => motor.Sprint();
+        onFoot.Melee.performed += ctx => motor.Melee();
     }
 
     // Update is called once per frame

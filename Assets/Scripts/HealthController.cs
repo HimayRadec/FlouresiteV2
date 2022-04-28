@@ -16,6 +16,7 @@ public class HealthController : MonoBehaviour
     /// into the Hurt Img:__ & Blood Splatter Img:__ .
     /// </summary>
 
+    // change to global later on
     public float currentPlayerHealth = 100.0f;
     [SerializeField] private float maxPlayerHealth = 100.0f;
     [SerializeField] private int regenRate = 1;

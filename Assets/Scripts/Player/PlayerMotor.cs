@@ -40,13 +40,14 @@ public class PlayerMotor : MonoBehaviour
     private WeaponSystem thirdWeapon;
 
     private WeaponSystem mainWeapon;
-
+    private PlayerAnimation animation;
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
         mainWeapon = GetComponentInChildren<WeaponSystem>();
+        animation = GetComponentInChildren<PlayerAnimation>();
 
         // Figure out multiple guns later
 

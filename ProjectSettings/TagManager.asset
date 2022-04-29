@@ -7,7 +7,6 @@ TagManager:
   - groundCheck
   - Ground
   - Enemy
-  - Zombie
   layers:
   - Default
   - TransparentFX
@@ -17,7 +16,7 @@ TagManager:
   - UI
   - Ground
   - Enemy
-  - 
+  - First Person
   - 
   - 
   - 

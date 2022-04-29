@@ -8,42 +8,45 @@ public class PlayerMotor : MonoBehaviour
     private CharacterController controller;
     private Vector3 playerVelocity;
 
+    // Speed Stats
     public float sprintSpeed = 8f;
     public float walkSpeed = 8f;
     public float speed = 5f;
 
-    public float jumpHeight = 3f;
+    public float jumpHeight = 1.5f;
+    public float crouchTimer = 0;
 
     private bool isGrounded;
     public float gravity = -9.8f;
 
+    // Current Player Actions
     public bool isWalking;
     public bool sprinting;
     public bool crouching;
-    public float crouchTimer = 0;
-    public bool lerpCrouch;
     
+    public bool lerpCrouch;
+    public bool isMeleeing = false;
  
 
-    // added in to change animation
-    
-
-    public bool isMeleeing = false;
-    [SerializeField]
-    private float animationFinishTime = 0.9f;
-    //
-
+    // Animations
     private Animator animator;
 
-    // Gun
-    private WeaponSysem weapon;
+    [SerializeField]
+    private float animationFinishTime = 0.9f;
+
+    // Gun System
+    private WeaponSystem firstWeapon;
+    private WeaponSystem secondWeapon;
+    private WeaponSystem thirdWeapon;
+
+    private WeaponSystem mainWeapon;
 
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        weapon = GetComponentInChildren<WeaponSysem>();
+        mainWeapon = GetComponentInChildren<WeaponSystem>();
 
         // Figure out multiple guns later
 
@@ -110,7 +113,7 @@ public class PlayerMotor : MonoBehaviour
     public void FireWeapon()
     {
         Debug.Log("FireWeapon");
-        weapon.Shoot();
+        mainWeapon.Shoot();
     }
 
     public void Jump()

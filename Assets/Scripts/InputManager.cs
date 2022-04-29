@@ -14,16 +14,16 @@ public class InputManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        // Makes the cursor disappear and lock on screen
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        playerInput = new PlayerInput();
         onFoot = playerInput.OnFoot;
+        playerInput = new PlayerInput();
         motor = GetComponent<PlayerMotor>();
         look = GetComponent<PlayerLook>();
 
-        // ngl I dont really understand this line of code
-        // what i get now is that when this button is clicked it will run the code after "motor."
+        // When the button is pressed it will call this function from the PlayerMotor script
 
         onFoot.Jump.performed += ctx => motor.Jump();
         onFoot.Crouch.performed += ctx => motor.Crouch();

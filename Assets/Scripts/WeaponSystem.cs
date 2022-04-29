@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponSysem : MonoBehaviour
+public class WeaponSystem : MonoBehaviour
 {
     // Gun Stats
-    public int damage;
-    public float timeBetweenShooting, timeBetweenShots;
+    public string weaponName;
+    public float damage;
+    public float timeBetweenShots;
     public float reloadTime;
     public float range = 100f;
 
@@ -19,10 +20,6 @@ public class WeaponSysem : MonoBehaviour
     public Camera fpsCam;
     public RaycastHit rayHit;
     public ParticleSystem muzzleFlash;
-
-    public HealthBar UI;
-
-    public LayerMask whatIsEnemy;
 
     // Start is called before the first frame update
     void Awake()
@@ -42,18 +39,21 @@ public class WeaponSysem : MonoBehaviour
     {
         if (readyToShoot)
         {
+            readyToShoot = false;
+            // plays muzzle flash
             muzzleFlash.Play();
 
-            Vector3 direction = fpsCam.transform.forward + new Vector3(0, 0, 0);
-            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
-            {
-                if (rayHit.collider.CompareTag("Enemy"))
-                    rayHit.collider.GetComponent<TargetHit>().TakeDamage(damage);
+            // decreases ammo;
+            ammoLeftInClip--;
+            Debug.Log(ammoLeftInClip + "bullets left in the clip");
 
-                Debug.Log("Gun Fired");
-                readyToShoot = false;
-                ammoLeftInClip--;
-                Debug.Log(ammoLeftInClip + "bullets left in the clip");
+            // shoots bullets
+            Vector3 direction = fpsCam.transform.forward + new Vector3(0, 0, 0);
+            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range))
+            {
+                // if it hits an enemy they will take damage
+                if (rayHit.collider.CompareTag("Enemy"))
+                    rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);
             }
            
             if (ammoLeftInClip <= 0)
@@ -77,14 +77,32 @@ public class WeaponSysem : MonoBehaviour
     {
         if (maxAmmo > 0)
         {
+
+            // if you don't have enough ammo for a full clip
             if (maxAmmo < clipSize)
             {
+                
+                // reload animation
+                // once reload animation is complete
+                // readyToShoot = true
+                // this should update after the gun is reloaded 
+
                 ammoLeftInClip = maxAmmo;
                 maxAmmo = 0;
-            } else
+            } 
+            else if (maxAmmo == 0)
             {
+                // play empty clip sound
+            }
+            else
+            // if you have enough ammo for a full clip
+            {
+                // reload animation
+
                 ammoLeftInClip = clipSize;
                 maxAmmo = maxAmmo - clipSize;
+
+               
             }
         }
         
@@ -92,6 +110,6 @@ public class WeaponSysem : MonoBehaviour
 
     public void reloadFinished()
     {
-
+        readyToShoot = true;
     }
 }

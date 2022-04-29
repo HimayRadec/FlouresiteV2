@@ -44,4 +44,13 @@ public class Enemy : MonoBehaviour
     {
         // activates walking animation
     }
+
+    public void TakeDamage(float damage)
+    {
+        health = health - damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 }

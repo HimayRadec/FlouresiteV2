@@ -18,8 +18,10 @@ public class InputManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        onFoot = playerInput.OnFoot;
         playerInput = new PlayerInput();
+        onFoot = playerInput.OnFoot;
+        
+
         motor = GetComponent<PlayerMotor>();
         look = GetComponent<PlayerLook>();
 

@@ -112,7 +112,6 @@ public class PlayerMotor : MonoBehaviour
 
     public void FireWeapon()
     {
-        Debug.Log("FireWeapon");
         mainWeapon.Shoot();
     }
 

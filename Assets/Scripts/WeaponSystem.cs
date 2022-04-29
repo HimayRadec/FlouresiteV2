@@ -21,6 +21,8 @@ public class WeaponSystem : MonoBehaviour
     public RaycastHit rayHit;
     public ParticleSystem muzzleFlash;
 
+    public LayerMask whatIsEnemy;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -49,11 +51,15 @@ public class WeaponSystem : MonoBehaviour
 
             // shoots bullets
             Vector3 direction = fpsCam.transform.forward + new Vector3(0, 0, 0);
-            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range))
+            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
             {
                 // if it hits an enemy they will take damage
+                // Enemies to be tagged under the layer and tag "Enemy"
                 if (rayHit.collider.CompareTag("Enemy"))
+                {
                     rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);
+                    Debug.Log("ENEMY HIT");
+                }
             }
            
             if (ammoLeftInClip <= 0)
@@ -75,36 +81,40 @@ public class WeaponSystem : MonoBehaviour
 
     public void Reload()
     {
-        if (maxAmmo > 0)
+        if (!reloading)
         {
-
-            // if you don't have enough ammo for a full clip
-            if (maxAmmo < clipSize)
+            if (maxAmmo > 0)
             {
-                
-                // reload animation
-                // once reload animation is complete
-                // readyToShoot = true
-                // this should update after the gun is reloaded 
 
-                ammoLeftInClip = maxAmmo;
-                maxAmmo = 0;
-            } 
-            else if (maxAmmo == 0)
-            {
-                // play empty clip sound
-            }
-            else
-            // if you have enough ammo for a full clip
-            {
-                // reload animation
+                // if you don't have enough ammo for a full clip
+                if (maxAmmo < clipSize)
+                {
 
-                ammoLeftInClip = clipSize;
-                maxAmmo = maxAmmo - clipSize;
+                    // reload animation
+                    // once reload animation is complete
+                    // readyToShoot = true
+                    // this should update after the gun is reloaded 
 
-               
+                    ammoLeftInClip = maxAmmo;
+                    maxAmmo = 0;
+                }
+                else if (maxAmmo == 0)
+                {
+                    // play empty clip sound
+                }
+                else
+                // if you have enough ammo for a full clip
+                {
+                    // reload animation
+
+                    ammoLeftInClip = clipSize;
+                    maxAmmo = maxAmmo - clipSize;
+
+
+                }
             }
         }
+        
         
     }
 

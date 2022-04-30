@@ -8,7 +8,7 @@ public class HealthController : MonoBehaviour
     /// <summary>
     /// This script is in corrilation with the Health Canvas. For
     /// the visuals of blood splatter which is the health indicator 
-    /// and damage taken, current hits taken effect. Using two png
+    /// of damage taken; current hits taken effect. Using two png/
     /// img I made from photoshop.
     /// 
     /// Attach this script to an Empty GameObject. Set Regen Rate: 30.

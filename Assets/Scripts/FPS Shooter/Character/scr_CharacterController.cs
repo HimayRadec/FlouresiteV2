@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using static scr_Models;
 
+// BUG LIST
+// Proning and not moving lowers you to 0.90...
+// You cant unprone until you move and y increases to 0.95
+
 public class scr_CharacterController : MonoBehaviour
 {
     private CharacterController characterController;
@@ -10,16 +14,21 @@ public class scr_CharacterController : MonoBehaviour
 
     // creates a data type with a X and Y value
     private Vector2 input_Movement;
-    private Vector2 input_View;
+
+    [HideInInspector]
+    public Vector2 input_View;
 
     private Vector3 newCameraRotation;
     private Vector3 newCharacterRotation; 
 
     [Header("References")]
     public Transform cameraHolder;
+    public Transform feetTransform;
 
     [Header("Settings")]
     public PlayerSettingsModel playerSettings;
+    public LayerMask playerMask;
+
 
     public float viewClampYMin = - 70f;
     public float viewClampYMax= 80f;
@@ -39,6 +48,7 @@ public class scr_CharacterController : MonoBehaviour
     public CharacterStance playerCrouchStance;
     public CharacterStance playerProneStance;
 
+    private float StanceCheckErrorMargin = 0.05f;
     private float cameraHeight;
     private float cameraHeightVelocity;
 
@@ -48,6 +58,15 @@ public class scr_CharacterController : MonoBehaviour
     private float stanceCapsuleHeight;
     private float stanceCapsuleHeightVelocity;
 
+    private bool isSprinting;
+
+    private Vector3 newMovementSpeed;
+    private Vector3 newMovementSpeedVecocity;
+
+    [Header("Weapon")]
+    public scr_WeaponController currentWeapon;
+
+
     public void Awake()
     {
         defaultInput = new DefaultInput();
@@ -56,6 +75,10 @@ public class scr_CharacterController : MonoBehaviour
         defaultInput.Character.Movement.performed += e => input_Movement = e.ReadValue<Vector2>();
         defaultInput.Character.View.performed += e => input_View = e.ReadValue<Vector2>();
         defaultInput.Character.Jump.performed += e => Jump();
+        defaultInput.Character.Crouch.performed += e => Crouch();
+        defaultInput.Character.Prone.performed += e => Prone();
+        defaultInput.Character.Sprint.performed += e => ToggleSprint();
+        defaultInput.Character.SprintReleased.performed += e => StopSprint();
 
         // input is now enabled
         defaultInput.Enable();
@@ -66,6 +89,11 @@ public class scr_CharacterController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         cameraHeight = cameraHolder.localPosition.y;
+
+        if (currentWeapon)
+        {
+            currentWeapon.Initialise(this);
+        }
     }
 
     private void Update()
@@ -74,6 +102,7 @@ public class scr_CharacterController : MonoBehaviour
         CalculateView();
         CalculateJump();
         CalculateStance();
+
     }
 
     private void CalculateView()
@@ -91,13 +120,50 @@ public class scr_CharacterController : MonoBehaviour
     
     private void CalculateMovement()
     {
-        var verticalSpeed = playerSettings.WalkingForwardSpeed * input_Movement.y * Time.deltaTime;
-        var horizontalSpeed = playerSettings.WalkingStrafeSpeed * input_Movement.x * Time.deltaTime;
+        // if you let go of W sprinting will reset
+        if (input_Movement.y <= 0.2f)
+        {
+            isSprinting = false;
+        }
 
-        var newMovementSpeed = new Vector3(horizontalSpeed, 0, verticalSpeed);
+        var horizontalSpeed = playerSettings.WalkingStrafeSpeed;
+        var verticalSpeed = playerSettings.WalkingForwardSpeed;
+
+        // updates movespeed if you are sprinting   
+        if (isSprinting)
+        {
+            verticalSpeed = playerSettings.RunningForwardSpeed;
+            horizontalSpeed = playerSettings.RunningStrafeSpeed;
+        }
+
+        // Effectors
+
+        if (!characterController.isGrounded)
+        {
+            playerSettings.SpeedEffector = playerSettings.FallingSpeedEffector;
+        }
+        else if (playerStance == PlayerStance.Crouch)
+        {
+            playerSettings.SpeedEffector = playerSettings.CrouchSpeedEffector;
+        }
+        else if (playerStance == PlayerStance.Prone)
+        {
+            playerSettings.SpeedEffector = playerSettings.ProneSpeedEffector;
+        }
+        else
+        {
+            playerSettings.SpeedEffector = 1;
+        }
+
+        verticalSpeed *= playerSettings.SpeedEffector;
+        horizontalSpeed *= playerSettings.SpeedEffector;
+
+
+        // Smooths movement when switching speeds
+        newMovementSpeed = Vector3.SmoothDamp(newMovementSpeed, new Vector3(horizontalSpeed * input_Movement.x * Time.deltaTime, 0, verticalSpeed * input_Movement.y * Time.deltaTime), ref newMovementSpeedVecocity, characterController.isGrounded ? playerSettings.MovementSmoothing : playerSettings.FallingSmoothing);
 
         // Move relative to players view
-        newMovementSpeed = transform.TransformDirection(newMovementSpeed);
+        var movementSpeed = transform.TransformDirection(newMovementSpeed);
 
         // Gravity
 
@@ -112,10 +178,10 @@ public class scr_CharacterController : MonoBehaviour
             playerGravity = -0.1f;
         }
 
-        newMovementSpeed.y += playerGravity;
-        newMovementSpeed += jumpingForce * Time.deltaTime;
+        movementSpeed.y += playerGravity;
+        movementSpeed += jumpingForce * Time.deltaTime;
 
-        characterController.Move(newMovementSpeed);
+        characterController.Move(movementSpeed);
     }
 
     private void CalculateJump()
@@ -146,13 +212,91 @@ public class scr_CharacterController : MonoBehaviour
 
     private void Jump()
     {
-        if (!characterController.isGrounded)
+
+        // could make it so if you are in prone you just crouch and then stand instead.
+        if (!characterController.isGrounded || playerStance == PlayerStance.Prone)
         {
             return;  
+        }
+
+        // if you are crouched you will stand instead of crouch jumping
+        if (playerStance == PlayerStance.Crouch)
+        {
+            if (StanceCheck(playerStandStance.StanceCollider.height))
+            {
+                return;
+            }
+
+            playerStance = PlayerStance.Stand;
+            return;
         }
 
         // Jump
         jumpingForce = Vector3.up * playerSettings.JumpingHeight;
         playerGravity = 0;
+    }
+
+    private void Crouch()
+    {
+        if (playerStance == PlayerStance.Crouch)
+        {
+            if (StanceCheck(playerStandStance.StanceCollider.height))
+            {
+                return;
+            }
+
+            playerStance = PlayerStance.Stand;
+            return;
+        }
+
+        if (StanceCheck(playerCrouchStance.StanceCollider.height))
+        {
+            return;
+        }
+
+        playerStance = PlayerStance.Crouch;
+    }
+
+    private void Prone()
+    {
+        if (!(playerStance == PlayerStance.Prone))
+        {
+            playerStance = PlayerStance.Prone;
+            return;
+        } else if (!StanceCheck(playerStandStance.StanceCollider.height))
+        {
+            playerStance = PlayerStance.Stand;
+            return;
+
+        }
+    }
+
+    private bool StanceCheck(float stanceCheckHeight)
+    {
+        var start = new Vector3(feetTransform.position.x, feetTransform.position.y + characterController.radius + StanceCheckErrorMargin, feetTransform.position.z);
+        var end = new Vector3(feetTransform.position.x, feetTransform.position.y - characterController.radius - StanceCheckErrorMargin + stanceCheckHeight, feetTransform.position.z);
+
+
+        // If it won't collide with anything in playerMask the nit can uncrouch
+        return Physics.CheckCapsule(start, end, characterController.radius, playerMask);
+    }
+
+    private void ToggleSprint()
+    {
+        if (input_Movement.y <= 0.2f)
+        {
+            isSprinting = false;
+            return;
+        }
+
+        isSprinting = !isSprinting;
+    }
+    private void StopSprint()
+    {
+        if (playerSettings.SprintingHold)
+        {
+            isSprinting = false;
+        }
+        
     }
 }

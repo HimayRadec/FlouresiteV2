@@ -15,6 +15,7 @@ public class TargetHit : MonoBehaviour
     // The GunShoot script calls this method to descrease the health. Passing the damage = 10f from that script.
     public void TakeDamage(float amount)
     {
+        Debug.Log("Damage was taken");
         // if hit take damage
         health -= amount;
         if (health <= 0f)

@@ -35,11 +35,18 @@ public class PlayerMotor : MonoBehaviour
 
     private Animator animator;
 
+    // Gun
+    private WeaponSysem weapon;
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
+        weapon = GetComponentInChildren<WeaponSysem>();
+
+        // Figure out multiple guns later
+
     }
 
     // Update is called once per frame
@@ -79,6 +86,8 @@ public class PlayerMotor : MonoBehaviour
         Vector3 moveDirection = Vector3.zero;
 
         // forward backward movement
+
+
         moveDirection.x = input.x;
         moveDirection.z = input.y;
         
@@ -96,6 +105,12 @@ public class PlayerMotor : MonoBehaviour
             playerVelocity.y = -2f;
         controller.Move(playerVelocity * Time.deltaTime);
 
+    }
+
+    public void FireWeapon()
+    {
+        Debug.Log("FireWeapon");
+        weapon.Shoot();
     }
 
     public void Jump()

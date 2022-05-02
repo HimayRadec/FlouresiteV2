@@ -687,6 +687,57 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e45417f0d2e03c4479332ec9c4cd4f50, type: 3}
+--- !u!1 &435181679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 435181680}
+  - component: {fileID: 435181681}
+  m_Layer: 9
+  m_Name: Weapon Animations
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &435181680
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435181679}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1624080133}
+  m_Father: {fileID: 1035255691}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &435181681
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435181679}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 781d2e17e55a966488ba7081b7afb582, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &463706926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1004,6 +1055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 051565ab4b3ef3e40943e06897786d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  input_Movement: {x: 0, y: 0}
   input_View: {x: 0, y: 0}
   cameraHolder: {fileID: 144463644}
   feetTransform: {fileID: 656553313}
@@ -1014,7 +1066,7 @@ MonoBehaviour:
     ViewYInverted: 0
     SprintingHold: 1
     MovementSmoothing: 0.2
-    RunningForwardSpeed: 8
+    RunningForwardSpeed: 10
     RunningStrafeSpeed: 6
     WalkingForwardSpeed: 4
     WalkingBackwardSpeed: 2
@@ -1046,7 +1098,9 @@ MonoBehaviour:
   playerProneStance:
     CameraHeight: -0.58
     StanceCollider: {fileID: 719320275}
+  isSprinting: 0
   currentWeapon: {fileID: 1035255692}
+  weaponAnimationSpeed: 0
 --- !u!136 &719320280
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1778,7 +1832,7 @@ Transform:
   m_LocalPosition: {x: 0.1631, y: -0.1959, z: 0.242}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1624080133}
+  - {fileID: 435181680}
   m_Father: {fileID: 144463644}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1794,14 +1848,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41deb1bd4be8afe4bae986ac9bb86bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponAnimator: {fileID: 435181681}
   settings:
-    SwayAmount: 6
+    SwayAmount: 4
     SwayYInverted: 0
     SwayXInverted: 0
     SwaySmoothing: 0.1
     SwayResetSmoothing: 0.1
     SwayClampX: 8
     SwayClampY: 8
+    MovementSwayX: 10
+    MovementSwayY: 1
+    MovementSwayYInverted: 1
+    MovementSwayXInverted: 0
+    MovementSwaySmoothing: 0.2
   isInitialised: 0
 --- !u!4 &1116939523 stripped
 Transform:
@@ -1818,7 +1878,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1035255691}
+    m_TransformParent: {fileID: 435181680}
     m_Modifications:
     - target: {fileID: 100014, guid: 8233791bab55837408982f359042ae45, type: 3}
       propertyPath: m_Name
@@ -1846,15 +1906,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400014, guid: 8233791bab55837408982f359042ae45, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400014, guid: 8233791bab55837408982f359042ae45, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400014, guid: 8233791bab55837408982f359042ae45, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400014, guid: 8233791bab55837408982f359042ae45, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

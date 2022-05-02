@@ -12,8 +12,9 @@ public class scr_CharacterController : MonoBehaviour
     private CharacterController characterController;
     private DefaultInput defaultInput;
 
+    [HideInInspector]
     // creates a data type with a X and Y value
-    private Vector2 input_Movement;
+    public Vector2 input_Movement;
 
     [HideInInspector]
     public Vector2 input_View;
@@ -58,7 +59,8 @@ public class scr_CharacterController : MonoBehaviour
     private float stanceCapsuleHeight;
     private float stanceCapsuleHeightVelocity;
 
-    private bool isSprinting;
+    [HideInInspector]
+    public bool isSprinting;
 
     private Vector3 newMovementSpeed;
     private Vector3 newMovementSpeedVecocity;
@@ -66,6 +68,7 @@ public class scr_CharacterController : MonoBehaviour
     [Header("Weapon")]
     public scr_WeaponController currentWeapon;
 
+    public float weaponAnimationSpeed;
 
     public void Awake()
     {
@@ -153,6 +156,13 @@ public class scr_CharacterController : MonoBehaviour
         else
         {
             playerSettings.SpeedEffector = 1;
+        }
+
+        weaponAnimationSpeed = characterController.velocity.magnitude / (playerSettings.WalkingForwardSpeed * playerSettings.SpeedEffector);
+
+        if (weaponAnimationSpeed > 1)
+        {
+            weaponAnimationSpeed = 1;
         }
 
         verticalSpeed *= playerSettings.SpeedEffector;

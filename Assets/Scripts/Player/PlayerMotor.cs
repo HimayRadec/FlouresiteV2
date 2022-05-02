@@ -22,7 +22,9 @@ public class PlayerMotor : MonoBehaviour
     public bool crouching;
     public float crouchTimer = 0;
     public bool lerpCrouch;
-    
+
+    // !!! Added by Kanosh
+    //CharacterStats playerStats;
  
 
     // added in to change animation

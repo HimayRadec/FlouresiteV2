@@ -711,12 +711,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 435181679}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1624080133}
-  m_Father: {fileID: 1035255691}
+  - {fileID: 1055400437}
+  m_Father: {fileID: 721537593}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &435181681
@@ -1062,6 +1063,7 @@ MonoBehaviour:
   playerSettings:
     ViewXSensitivity: 20
     ViewYSensitivity: 20
+    AimingSensitivityEffector: 0.5
     ViewXInverted: 0
     ViewYInverted: 0
     SprintingHold: 1
@@ -1071,14 +1073,20 @@ MonoBehaviour:
     WalkingForwardSpeed: 4
     WalkingBackwardSpeed: 2
     WalkingStrafeSpeed: 3
-    JumpingHeight: 6
+    JumpingHeight: 8
     JumpingFalloff: 0.4
     FallingSmoothing: 0.4
     SpeedEffector: 1
     CrouchSpeedEffector: 0.6
     ProneSpeedEffector: 0.2
     FallingSpeedEffector: 0.8
+    AimingSpeedEffector: 0.5
+    isGroundedRadius: 0.1
+    isFallingSpeed: 1
   playerMask:
+    serializedVersion: 2
+    m_Bits: 511
+  groundMask:
     serializedVersion: 2
     m_Bits: 511
   viewClampYMin: -70
@@ -1100,7 +1108,10 @@ MonoBehaviour:
     StanceCollider: {fileID: 719320275}
   isSprinting: 0
   currentWeapon: {fileID: 1035255692}
-  weaponAnimationSpeed: 0
+  weaponAnimationSpeed: 1
+  isGrounded: 0
+  isFalling: 0
+  isAimingIn: 0
 --- !u!136 &719320280
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1190,6 +1201,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719969429}
   m_CullTransparentMesh: 1
+--- !u!1 &721537592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 721537593}
+  m_Layer: 9
+  m_Name: WeaponSway
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &721537593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721537592}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 435181680}
+  m_Father: {fileID: 1035255691}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &828934342
 GameObject:
   m_ObjectHideFlags: 0
@@ -1832,7 +1874,7 @@ Transform:
   m_LocalPosition: {x: 0.1631, y: -0.1959, z: 0.242}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 435181680}
+  - {fileID: 721537593}
   m_Father: {fileID: 144463644}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1863,6 +1905,45 @@ MonoBehaviour:
     MovementSwayXInverted: 0
     MovementSwaySmoothing: 0.2
   isInitialised: 0
+  weaponSwayObject: {fileID: 721537593}
+  swayAmountA: 1
+  swayAmountB: 2
+  swayScale: 5000
+  swayLerpSpeed: 14
+  sightTarget: {fileID: 1055400437}
+  sightOffset: 0.15
+  aimingInTime: 0.2
+  isAimingIn: 0
+--- !u!1 &1055400436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1055400437}
+  m_Layer: 9
+  m_Name: SightTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1055400437
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055400436}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0011, y: 0.1902, z: -0.2419}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 435181680}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1116939523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 215222362125894206, guid: 5e40680813fbb6c47b75c8f871ff76bc, type: 3}
@@ -2411,7 +2492,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 50
   orthographic: 0

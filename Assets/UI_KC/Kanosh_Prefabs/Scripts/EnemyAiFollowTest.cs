@@ -6,10 +6,15 @@ using UnityEngine.AI;
 public class EnemyAiFollowTest : MonoBehaviour
 {
     public NavMeshAgent zombie;
-    public Transform Player;
+    public GameObject Player;
+
+    void Start()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
+    }
 
     void Update()
     {
-        zombie.SetDestination(Player.position);
+        zombie.SetDestination(Player.transform.position);
     }
 }

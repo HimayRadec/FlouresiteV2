@@ -4,79 +4,41 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    // KC Added
+    //private int waveNumber = 0;
+    //private int enemySpawnAmount = 0;
+    //private int enemiesKilled = 0;
+
+    public GameObject[] spawners;
     public GameObject enemy;
-    public GameObject spawner;
-    int spawnLimit = 0;
-    public int addCanSpawnEnemies = 0;
-    public Collider enemySphere;
 
-
-    public float spawnCooldown = 2f;
-    public bool isEnabled = false;
+    int addEnemies = 1;
 
     private void Start()
     {
-        enemySphere.isTrigger = false;
+        spawners = new GameObject[24 + addEnemies];
+
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            spawners[i] = transform.GetChild(i).gameObject;
+        }
     }
 
     private void Update()
     {
-        // If enemy is withing radius
-        // enable object
-        // if not disable object
-
-        //GetComponent<Collider>().isTrigger = true;
-
-        // I added this line: if the player triggers the spawns radius then set isEnabled to true.
-        if (enemySphere.isTrigger == true)
-        {
-            isEnabled = true;
-        }
-        else
-        {
-            isEnabled = false;
-        }
-
-        if (isEnabled)
-        {
-            SpawnCooldownTimer();
-
-            if (spawnCooldown <= 0 && spawnLimit != 5)
-            {
-                SpawnEnemy();
-            }
-            else
-            {
-                isEnabled = false;
-            }
-        }
+        // if something, maybe trigger > SpawnEnemy();
     }
 
     private void SpawnEnemy()
     {
-        Instantiate(enemy, spawner.transform.position, Quaternion.identity);
-
-        if (WaveSystem.CanSpawnEnemies() == true)
-        {
-            // Spawn an Enemy
-            // create game object of the enemy at the current spawner location
-
-            WaveSystem.currentSpawnedEnemies++;
-            WaveSystem.totalSpawnedEnemies++;
-
-            spawnCooldown = 5f;
-        }
-        addCanSpawnEnemies++;
-        spawnLimit++;
+        int spawnID = Random.Range(0, spawners.Length);
+        Instantiate(enemy, spawners[spawnID].transform.position, spawners[spawnID].transform.rotation);
     }
 
-    private void SpawnCooldownTimer()
+    private void OnTriggerEnter(Collider other)
     {
-        if (spawnCooldown > 0)
+        if (other.transform.tag == "Player")
         {
-            spawnCooldown = spawnCooldown - 1 * Time.deltaTime;
+            SpawnEnemy();
         }
-        
     }
 }

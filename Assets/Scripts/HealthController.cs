@@ -60,8 +60,10 @@ public class HealthController : MonoBehaviour
         hurtImage.enabled = false;
     }
 
-    public void TakeDamage()
+    // KC I added this param damage given from EnemyAiFollowTest
+    public void TakeDamage(float damage)
     {
+        damage -= currentPlayerHealth;
         if (currentPlayerHealth >= 0)
         {
             canRegen = false;

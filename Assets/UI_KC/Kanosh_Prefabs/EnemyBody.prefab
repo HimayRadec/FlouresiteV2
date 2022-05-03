@@ -134,3 +134,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zombie: {fileID: 637800372469563346}
   Player: {fileID: 6267005165526135022, guid: 7a499fa7c1a0154469dba537311decbc, type: 3}
+  stoppingDistance: 0

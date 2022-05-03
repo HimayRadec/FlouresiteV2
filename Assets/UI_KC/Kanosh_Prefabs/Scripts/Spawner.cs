@@ -8,37 +8,33 @@ public class Spawner : MonoBehaviour
     //private int enemySpawnAmount = 0;
     //private int enemiesKilled = 0;
 
-    public GameObject[] spawners;
-    public GameObject enemy;
+    [SerializeField]
+    private GameObject enemyPrefab;
+    [SerializeField]
+    private GameObject enemyContainer;
 
-    int addEnemies = 1;
+    private bool stopSpawn;
 
     private void Start()
     {
-        spawners = new GameObject[24 + addEnemies];
+        StartCoroutine(SpawnEnemy());
+    }
 
-        for (int i = 0; i < spawners.Length; i++)
+    IEnumerator SpawnEnemy()
+    {
+        while (stopSpawn == false)
         {
-            spawners[i] = transform.GetChild(i).gameObject;
+            float xSpawnPos = Mathf.Round(Random.Range(-9.0f, 9.0f) * 10) / 10;
+            Vector3 enemySpawnPos = new Vector3(xSpawnPos, 6.5f, 0f);
+
+            GameObject zEnemy = Instantiate(enemyPrefab, enemySpawnPos, Quaternion.identity);
+            zEnemy.transform.parent = enemyContainer.transform;
+            yield return new WaitForSeconds(5.0f);
         }
     }
 
-    private void Update()
+    public void PlayerDead()
     {
-        // if something, maybe trigger > SpawnEnemy();
-    }
-
-    private void SpawnEnemy()
-    {
-        int spawnID = Random.Range(0, spawners.Length);
-        Instantiate(enemy, spawners[spawnID].transform.position, spawners[spawnID].transform.rotation);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.transform.tag == "Player")
-        {
-            SpawnEnemy();
-        }
+        stopSpawn = true;
     }
 }

@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
 
     public void Attack()
     {
+        WaveSystem.totalSpawnedEnemies++;
         // if (canAttack)
         // attacks when enemy is within range
         // activates attack animation
@@ -43,5 +44,12 @@ public class Enemy : MonoBehaviour
     public void Walk()
     {
         // activates walking animation
+    }
+
+    public void Death()
+    {
+        WaveSystem.currentSpawnedEnemies--;
+        WaveSystem.enemiesLeftInRound--;
+
     }
 }

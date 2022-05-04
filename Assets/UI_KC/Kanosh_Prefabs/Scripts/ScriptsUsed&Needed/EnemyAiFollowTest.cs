@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class EnemyAiFollowTest : MonoBehaviour
 {
+    [SerializeField] private HealthController healthController = null;
+
     public NavMeshAgent zombie;
     public GameObject Player;
 
@@ -51,7 +53,7 @@ public class EnemyAiFollowTest : MonoBehaviour
         if (Time.time - lastAttackTime >= attackCoolDown)
         {
             lastAttackTime = Time.time;
-            Player.GetComponent<HealthController>().TakeDamage(damage);
+            //Player.GetComponent<HealthController>().TakeDamage(damage);
         }
     }
 }

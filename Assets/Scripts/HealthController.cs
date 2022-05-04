@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class HealthController : MonoBehaviour
 {
+    //public Canvas image1;
+    //public Canvas image2;
+
     /// <summary>
     /// This script is in corrilation with the Health Canvas. For
     /// the visuals of blood splatter which is the health indicator 
@@ -17,8 +20,10 @@ public class HealthController : MonoBehaviour
     /// </summary>
 
     // change to global later on
+    [Header("Player Health Amount")]
     public float currentPlayerHealth = 100.0f;
     [SerializeField] private float maxPlayerHealth = 100.0f;
+
     [SerializeField] private int regenRate = 1;
     private bool canRegen = false;
 
@@ -40,11 +45,6 @@ public class HealthController : MonoBehaviour
     private AudioSource healthAudioSource;
     */
 
-    private void Start()
-    {
-        //healthAudioSource = GetComponent<AudioSource>();
-    }
-
     void UpdateHealth()
     {
         Color splatterAlpha = redSplatterImage.color;
@@ -61,9 +61,8 @@ public class HealthController : MonoBehaviour
     }
 
     // KC I added this param damage given from EnemyAiFollowTest
-    public void TakeDamage(float damage)
+    public void TakeDamage()
     {
-        damage -= currentPlayerHealth;
         if (currentPlayerHealth >= 0)
         {
             canRegen = false;
@@ -76,29 +75,47 @@ public class HealthController : MonoBehaviour
 
     private void Update()
     {
-        if (startCoolDown)
+        if (currentPlayerHealth != 0)
         {
-            healCoolDown -= Time.deltaTime;
-            if (healCoolDown <= 0)
+            if (startCoolDown)
             {
-                canRegen = true;
-                startCoolDown = false;
+                healCoolDown -= Time.deltaTime;
+                if (healCoolDown <= 0)
+                {
+                    canRegen = true;
+                    startCoolDown = false;
+                }
+            }
+
+            if (canRegen)
+            {
+                if (currentPlayerHealth <= maxPlayerHealth - 0.01)
+                {
+                    currentPlayerHealth += Time.deltaTime * regenRate;
+                    UpdateHealth();
+                }
+                else
+                {
+                    currentPlayerHealth = maxPlayerHealth;
+                    healCoolDown = maxHealCoolDown;
+                    canRegen = false;
+                }
             }
         }
-
-        if (canRegen)
+        else
         {
-            if (currentPlayerHealth <= maxPlayerHealth - 0.01)
-            {
-                currentPlayerHealth += Time.deltaTime * regenRate;
-                UpdateHealth();
-            }
-            else
-            {
-                currentPlayerHealth = maxPlayerHealth;
-                healCoolDown = maxHealCoolDown;
-                canRegen = false;
-            }
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        if (currentPlayerHealth == 0)
+        {
+            // End Credits or something before the game quits or restarts, your choice.
+
+            Debug.Log("Player Has DIED!! Quitting application.");
+            Application.Quit();
         }
     }
 }

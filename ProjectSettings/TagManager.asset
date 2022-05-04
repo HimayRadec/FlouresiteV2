@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Zombie
   - SpawnTrigger
+  - HealthController
   layers:
   - Default
   - TransparentFX

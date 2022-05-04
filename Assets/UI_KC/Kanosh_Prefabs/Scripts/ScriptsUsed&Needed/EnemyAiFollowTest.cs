@@ -5,8 +5,6 @@ using UnityEngine.AI;
 
 public class EnemyAiFollowTest : MonoBehaviour
 {
-    [SerializeField] private HealthController healthController = null;
-
     public NavMeshAgent zombie;
     public GameObject Player;
 

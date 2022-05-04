@@ -18,7 +18,7 @@ public class HealthBar : MonoBehaviour
 
     public void Awake()
     {
-        gun.GetComponent<WeaponSystem>();
+        //gun.GetComponent<WeaponSystem>();
     }
     public void SetMaxHealth(int health)
     {

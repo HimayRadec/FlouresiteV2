@@ -22,12 +22,12 @@ public class EnemyAiFollowTest : MonoBehaviour
 
     void Update()
     {
-        //zombie.SetDestination(Player.transform.position);
-        float distanceToPlayer = Vector3.Distance(transform.position, Player.transform.position);
+
+        float distanceToPlayer = Vector2.Distance(transform.position, Player.transform.position);
         if (distanceToPlayer < stoppingDistance)
         {
-            // StopEnemy();
-            // Attack();
+            StopEnemy();
+            Attack();
         }
         else
         {
@@ -51,6 +51,7 @@ public class EnemyAiFollowTest : MonoBehaviour
         if (Time.time - lastAttackTime >= attackCoolDown)
         {
             lastAttackTime = Time.time;
+            // trigger attack animation
             //Player.GetComponent<HealthController>().TakeDamage(damage);
         }
     }

@@ -10,17 +10,14 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField]
     private LayerMask mask;
     private PlayerUI playerUI;
-    private InputManager inputManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        cam = GetComponent<PlayerLook>().cam;
 
         // need this explained to me
         playerUI = GetComponent<PlayerUI>();
 
-        inputManager = GetComponent<InputManager>();
     }
 
     // Update is called once per frame
@@ -43,10 +40,12 @@ public class PlayerInteract : MonoBehaviour
                 playerUI.UpdateText(interactable.promptMessage);
 
                 // Why is his OnFoot and mine onFoot
+                /*
                 if (inputManager.onFoot.Interact.triggered)
                 {
                     interactable.BaseInteract();
                 }
+                */
             }
         }
 

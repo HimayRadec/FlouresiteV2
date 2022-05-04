@@ -17,17 +17,17 @@ public class EnemyAiFollowTest : MonoBehaviour
     void Start()
     {
         zombie = GetComponent<NavMeshAgent>();
-        Player = GameObject.FindGameObjectWithTag("Player");
+        // Player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
     {
         //zombie.SetDestination(Player.transform.position);
-        float dist = Vector3.Distance(transform.position, Player.transform.position);
-        if (dist < stoppingDistance)
+        float distanceToPlayer = Vector3.Distance(transform.position, Player.transform.position);
+        if (distanceToPlayer < stoppingDistance)
         {
-            StopEnemy();
-            Attack();
+            // StopEnemy();
+            // Attack();
         }
         else
         {

@@ -25,7 +25,6 @@ public class Enemy : MonoBehaviour
 
     public void Attack()
     {
-        WaveSystem.totalSpawnedEnemies++;
         // if (canAttack)
         // attacks when enemy is within range
         // activates attack animation
@@ -46,10 +45,12 @@ public class Enemy : MonoBehaviour
         // activates walking animation
     }
 
-    public void Death()
+    public void TakeDamage(float damage)
     {
-        WaveSystem.currentSpawnedEnemies--;
-        WaveSystem.enemiesLeftInRound--;
-
+        health = health - damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

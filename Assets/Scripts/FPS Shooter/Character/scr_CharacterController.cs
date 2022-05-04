@@ -85,6 +85,7 @@ public class scr_CharacterController : MonoBehaviour
     private void Awake()
     {
         defaultInput = new DefaultInput();
+        Cursor.lockState = CursorLockMode.Locked;
 
         // updates the X and Y value to character movement
         defaultInput.Character.Movement.performed += e => input_Movement = e.ReadValue<Vector2>();
@@ -94,8 +95,13 @@ public class scr_CharacterController : MonoBehaviour
         defaultInput.Character.Prone.performed += e => Prone();
         defaultInput.Character.Sprint.performed += e => ToggleSprint();
         defaultInput.Character.SprintReleased.performed += e => StopSprint();
+
         defaultInput.Weapon.Fire2Pressed.performed += e => AimingInPressed();
         defaultInput.Weapon.Fire2Released.performed += e => AimingInReleased();
+
+        // Swap later to advanced
+        defaultInput.Weapon.Fire1Pressed.performed += e => RaycastShootingPressed();
+        defaultInput.Weapon.Fire1Released.performed += e => RaycastShootingReleased();
 
         // input is now enabled
         defaultInput.Enable();
@@ -128,6 +134,45 @@ public class scr_CharacterController : MonoBehaviour
         CalculateAimingIn();
 
     }
+    #endregion
+
+    #region - Raycast Shooting -
+
+    private void RaycastShootingPressed()
+    {
+        if (currentWeapon)
+        {
+            currentWeapon.isShooting = true;
+            isSprinting = false;
+
+
+        }
+    }
+
+    private void RaycastShootingReleased()
+    {
+        currentWeapon.isShooting = false;
+
+    }
+
+    #endregion
+
+    #region - Advanced Shooting -
+
+    private void ShootingPressed()
+    {
+        if (currentWeapon)
+        {
+            currentWeapon.isShooting = true;
+
+        }
+    }
+
+    private void ShootingReleased()
+    {
+        currentWeapon.isShooting = true;
+    }
+
     #endregion
 
     #region - Aiming In-

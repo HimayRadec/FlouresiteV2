@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static scr_Models;
 
@@ -10,6 +12,15 @@ public class scr_WeaponController : MonoBehaviour
 
     [Header("References")]
     public Animator weaponAnimator;
+    public GameObject bulletPrefab;
+    public Transform bulletSpawn;
+
+    // for ray casting
+    public Camera fpsCam;
+    // switch to the bullet spawn later?
+    public ParticleSystem muzzleFlash;
+    public GameObject fleshImpact;
+    public GameObject nonFleshImpact;
 
     [Header("Settings")]
     public WeaponSettingsModel settings;
@@ -49,14 +60,25 @@ public class scr_WeaponController : MonoBehaviour
     [HideInInspector]
     public bool isAimingIn;
 
+    [Header("Shooting")]
+    public float damage;
+    public float range;
+
+    public float fireRate;
+    private float currentFireRate;
+    public List<WeaponFireType> allowedFireType;
+    public WeaponFireType currentFireType;
+    [HideInInspector]
+    public bool isShooting;
+    [HideInInspector]
+    private float nextTimeToFire;
+
+    #region - Start / Update -
     private void Start()
     {
         newWeaponRotation = transform.localRotation.eulerAngles;
-    }
-    public void Initialise(scr_CharacterController CharacterController)
-    {
-        characterController = CharacterController;
-        isInitialised = true;
+        currentFireType = allowedFireType.First();
+
     }
 
     private void Update()
@@ -70,11 +92,69 @@ public class scr_WeaponController : MonoBehaviour
         SetWeaponAnimations();
         CalculateWeaponSway();
         CalculateAimingIn();
+        CalculateShooting();
 
 
 
     }
+    #endregion
 
+    #region - Shooting -
+
+    private void CalculateShooting()
+    {
+        // what is Time.time ??
+        if (isShooting && Time.time >= nextTimeToFire)
+        {
+            nextTimeToFire = Time.time + 1f / fireRate;
+            muzzleFlash.Play();
+            RaycastShoot();
+
+            /* 
+             * MORE ADVANCED Shooting
+            if (currentFireType == WeaponFireType.SemiAuto)
+            {
+                isShooting = false;
+            }
+            */
+        }
+    }
+
+    private void RaycastShoot()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+        {
+            Enemy enemy = hit.transform.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                Debug.Log("enemy hit");
+                enemy.TakeDamage(damage);
+                Instantiate(fleshImpact, hit.point, Quaternion.LookRotation(hit.normal));
+                return;
+            }
+            Instantiate(nonFleshImpact, hit.point, Quaternion.LookRotation(hit.normal));
+
+        }
+        // this is for the more advanced later on
+        // var bullet = Instantiate(bulletPrefab, bulletSpawn);
+
+        // Load bullet settings
+
+    }
+
+    #endregion
+
+    #region - Initialise -
+    public void Initialise(scr_CharacterController CharacterController)
+    {
+        characterController = CharacterController;
+        isInitialised = true;
+    }
+
+    #endregion
+
+    #region - Aiming In -
     private void CalculateAimingIn()
     {
         var targetPosition = transform.position;
@@ -87,14 +167,18 @@ public class scr_WeaponController : MonoBehaviour
         weaponSwayPosition = Vector3.SmoothDamp(weaponSwayPosition, targetPosition, ref weaponSwayPositionVelocity, aimingInTime);
         weaponSwayObject.transform.position = weaponSwayPosition + swayPosition;
     }
+    #endregion
 
+    #region - Jumping -
     public void TriggerJump()
     {
         isGroundedTrigger = false;
         Debug.Log("Trigger Jump");
         weaponAnimator.SetTrigger("Jump");
     }
+    #endregion
 
+    #region - Rotation -
     private void CalculateWeaponRotation()
     {
 
@@ -120,7 +204,9 @@ public class scr_WeaponController : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(newWeaponRotation + newWeaponMovementRotation);
     }
+    #endregion
 
+    #region - Animations -
     private void SetWeaponAnimations()
     {
         if (isGroundedTrigger)
@@ -149,13 +235,15 @@ public class scr_WeaponController : MonoBehaviour
         weaponAnimator.SetBool("isSprinting", characterController.isSprinting);
         weaponAnimator.SetFloat("WeaponAnimationSpeed", characterController.weaponAnimationSpeed);
     }
+    #endregion
 
+    #region - Sway -
     private void CalculateWeaponSway()
     {
         var targetPosition = LissajousCurve(swayTime, swayAmountA, swayAmountB) / (isAimingIn ? swayScale * 15 : swayScale);
         swayPosition = Vector3.Lerp(swayPosition, targetPosition, Time.smoothDeltaTime * swayLerpSpeed);
         swayTime += Time.deltaTime;
-        
+
         if (swayTime > 6.3f)
         {
             swayTime = 0;
@@ -168,5 +256,6 @@ public class scr_WeaponController : MonoBehaviour
     {
         return new Vector3(Mathf.Sin(Time), A * Mathf.Sin(B * Time + Mathf.PI));
     }
+    #endregion
 
 }

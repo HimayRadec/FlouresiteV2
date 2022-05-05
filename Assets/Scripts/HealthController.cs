@@ -55,7 +55,6 @@ public class HealthController : MonoBehaviour
     IEnumerator HurtFlash()
     {
         hurtImage.enabled = true;
-        //healthAudioSource.PlayOneShot(hurtAudio);
         yield return new WaitForSeconds(hurtTimer);
         hurtImage.enabled = false;
     }

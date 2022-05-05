@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Tutorial by Fulled By Caffiene
+// It pretty much has all the play settings
 public static class scr_Models
 {
     #region - Player -

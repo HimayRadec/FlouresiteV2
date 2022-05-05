@@ -3,7 +3,9 @@ using System.Linq;
 using UnityEngine;
 using static scr_Models;
 
-
+// Tutorial by Fulled By Caffiene
+// Refined by Himay
+// Has Weapon Movement, Animations, and Settings
 public class scr_WeaponController : MonoBehaviour
 {
 
@@ -173,7 +175,6 @@ public class scr_WeaponController : MonoBehaviour
     public void TriggerJump()
     {
         isGroundedTrigger = false;
-        Debug.Log("Trigger Jump");
         weaponAnimator.SetTrigger("Jump");
     }
     #endregion
@@ -221,13 +222,11 @@ public class scr_WeaponController : MonoBehaviour
 
         if (characterController.isGrounded && !isGroundedTrigger && fallingDelay > 0.1f)
         {
-            Debug.Log("Land");
             weaponAnimator.SetTrigger("Land");
             isGroundedTrigger = true;
         }
         else if (!characterController.isGrounded && isGroundedTrigger)
         {
-            Debug.Log("Falling");
             weaponAnimator.SetTrigger("Falling");
             isGroundedTrigger = false;
         }

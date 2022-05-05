@@ -9,6 +9,10 @@ using static scr_Models;
 //
 // If running and try to aim in it doesnt aim in 
 
+// Tutorial by Fulled By Caffiene
+// Refined by Himay
+// Controls Player Movement
+
 public class scr_CharacterController : MonoBehaviour
 {
     private CharacterController characterController;

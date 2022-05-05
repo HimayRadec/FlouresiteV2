@@ -12,20 +12,24 @@ public class ViperwolfAnimation : MonoBehaviour
     public Animator anim;
     public NavMeshAgent agent;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        anim = GetComponent<Animator>();
     }
-
     // Update is called once per frame
     void Update()
     {
-        
+        Moving();
     }
 
-    private void CalculateAnimation()
+    public void Moving()
     {
-
+        if (!agent.isStopped)
+        {
+            anim.SetBool("IsRunning", true);
+        } else
+        {
+            anim.SetBool("IsRunning", false);
+        }
     }
 }

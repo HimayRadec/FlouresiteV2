@@ -75,6 +75,11 @@ public class scr_WeaponController : MonoBehaviour
     [HideInInspector]
     private float nextTimeToFire;
 
+    [Header("Ammo")]
+    public int magazineSize;
+    public int ammoInMagazine;
+    public int totalAmmo;
+
     #region - Start / Update -
     private void Start()
     {
@@ -142,7 +147,8 @@ public class scr_WeaponController : MonoBehaviour
         // var bullet = Instantiate(bulletPrefab, bulletSpawn);
 
         // Load bullet settings
-
+        ammoInMagazine--;
+        totalAmmo--;
     }
 
     #endregion

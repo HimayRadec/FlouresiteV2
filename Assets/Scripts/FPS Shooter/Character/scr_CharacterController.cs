@@ -15,6 +15,7 @@ using static scr_Models;
 
 public class scr_CharacterController : MonoBehaviour
 {
+
     private CharacterController characterController;
     private DefaultInput defaultInput;
 

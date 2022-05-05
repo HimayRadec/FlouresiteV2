@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StartScreen.unity
     guid: c64427b18dbd2ce48964bc26a991b930
+  - enabled: 1
+    path: Assets/Scenes/Floursite Map.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/GameOverScreen.unity
+    guid: e8f90b1a4351fc541a30510b4e20dea7
   m_configObjects: {}

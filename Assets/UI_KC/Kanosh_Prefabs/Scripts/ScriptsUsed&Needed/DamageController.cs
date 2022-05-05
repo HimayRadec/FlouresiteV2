@@ -17,7 +17,7 @@ public class DamageController : MonoBehaviour
             viperWolf.SetActive(true);
             healthController.currentPlayerHealth -= damage;
             healthController.TakeDamage();
-            gameObject.GetComponent<BoxCollider>().enabled = true;
+            gameObject.GetComponent<SphereCollider>().enabled = true;
         }
     }
 }

@@ -10,6 +10,8 @@ public class UserInterface : MonoBehaviour
     public Gradient healthBarGradient;
     public Image healthBarFill;
 
+    public HealthController health;
+
     public Text roundNumber;
     public Text pointsDisplay;
 
@@ -30,7 +32,7 @@ public class UserInterface : MonoBehaviour
         healthBarFill.color = healthBarGradient.Evaluate(1f);
     }
 
-    public void SetHealth(int health)
+    public void SetHealth(float health)
     {
         healthBarSlider.value = health;
 
@@ -83,6 +85,6 @@ public class UserInterface : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        SetHealth(health.currentPlayerHealth);
     }
 }

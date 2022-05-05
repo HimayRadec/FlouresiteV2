@@ -160,6 +160,10 @@ public class scr_WeaponController : MonoBehaviour
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
             Enemy enemy = hit.transform.GetComponent<Enemy>();
+            if (hit.transform.tag == "Enemy")
+            {
+                Debug.Log("ENEMY TAG");
+            }
             if (enemy != null)
             {
                 Debug.Log("enemy hit");

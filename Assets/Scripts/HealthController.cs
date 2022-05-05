@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class HealthController : MonoBehaviour
 {
     //public Canvas image1;
@@ -21,8 +21,8 @@ public class HealthController : MonoBehaviour
 
     // change to global later on
     [Header("Player Health Amount")]
-    public float currentPlayerHealth = 100.0f;
-    [SerializeField] private float maxPlayerHealth = 100.0f;
+    public float currentPlayerHealth = 150f;
+    [SerializeField] private float maxPlayerHealth = 150f;
 
     [SerializeField] private int regenRate = 1;
     private bool canRegen = false;
@@ -74,6 +74,12 @@ public class HealthController : MonoBehaviour
 
     private void Update()
     {
+        if (currentPlayerHealth <= 0)
+        {
+            Application.Quit();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+        }
         if (currentPlayerHealth != 0)
         {
             if (startCoolDown)

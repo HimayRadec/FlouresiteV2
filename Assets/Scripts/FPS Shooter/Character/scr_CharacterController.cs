@@ -31,6 +31,9 @@ public class scr_CharacterController : MonoBehaviour
     [Header("References")]
     public Transform cameraHolder;
     public Transform feetTransform;
+    // will have to change to gunInHand later?
+
+    public scr_WeaponController weaponInHand;
 
     [Header("Settings")]
     public PlayerSettingsModel playerSettings;

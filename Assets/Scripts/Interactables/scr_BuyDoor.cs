@@ -2,28 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class scr_ammoBuy : Interactable
+public class scr_BuyDoor : Interactable
 {
     public PlayerSettings playerStats;
     public scr_CharacterController characterController;
-    AudioSource purchaseSuccessful;
 
-    public int ammoCost;
+    AudioSource purchaseSuccessful;
+    public int cost;
+
+    // Start is called before the first frame update
     void Start()
     {
         purchaseSuccessful = GetComponent<AudioSource>();
     }
 
-
     protected override void Interact()
     {
-        Debug.Log("Ammo Bought Attemtped");
 
-        if (playerStats.points >= ammoCost)
+        if (playerStats.points >= cost)
         {
-            characterController.currentWeapon.totalAmmo += characterController.weaponInHand.magazineSize;
-            playerStats.points -= ammoCost;
+
+            playerStats.points -= cost;
             purchaseSuccessful.Play();
+            Destroy(gameObject, 1);
         }
     }
 }

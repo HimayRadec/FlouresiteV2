@@ -31,6 +31,8 @@ public class scr_CharacterController : MonoBehaviour
     [Header("References")]
     public Transform cameraHolder;
     public Transform feetTransform;
+    public Camera cam;
+    public LayerMask mask;
     // will have to change to gunInHand later?
 
     public scr_WeaponController weaponInHand;
@@ -94,6 +96,7 @@ public class scr_CharacterController : MonoBehaviour
         defaultInput = new DefaultInput();
         Cursor.lockState = CursorLockMode.Locked;
 
+
         // updates the X and Y value to character movement
         defaultInput.Character.Movement.performed += e => input_Movement = e.ReadValue<Vector2>();
         defaultInput.Character.View.performed += e => input_View = e.ReadValue<Vector2>();
@@ -102,6 +105,9 @@ public class scr_CharacterController : MonoBehaviour
         defaultInput.Character.Prone.performed += e => Prone();
         defaultInput.Character.Sprint.performed += e => ToggleSprint();
         defaultInput.Character.SprintReleased.performed += e => StopSprint();
+
+        // Interact
+        defaultInput.Character.Interact.performed += e => BuyAmmo();
 
         defaultInput.Weapon.Fire2Pressed.performed += e => AimingInPressed();
         defaultInput.Weapon.Fire2Released.performed += e => AimingInReleased();
@@ -452,6 +458,41 @@ public class scr_CharacterController : MonoBehaviour
             isSprinting = false;
         }
         
+    }
+
+    #endregion
+
+    #region - Interacting -
+
+    public void BuyAmmo()
+    {
+        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+
+        RaycastHit hitInfo;
+        if (Physics.Raycast(ray, out hitInfo, 5f, mask))
+        {
+            
+
+            if (hitInfo.collider.GetComponent<scr_ammoBuy>() != null)
+            {
+                Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
+                //playerUI.UpdateText(interactable.promptMessage);
+
+                interactable.BaseInteract();
+
+
+            } 
+            else if (hitInfo.collider.GetComponent<scr_BuyDoor>() != null)
+            {
+                Debug.Log("BUY DOOR");
+                Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
+                //playerUI.UpdateText(interactable.promptMessage);
+
+                interactable.BaseInteract();
+
+
+            }
+        }
     }
 
     #endregion

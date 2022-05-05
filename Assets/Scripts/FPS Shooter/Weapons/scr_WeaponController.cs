@@ -91,6 +91,7 @@ public class scr_WeaponController : MonoBehaviour
     public int ammoInMagazine;
     public int totalAmmo;
     public float reloadingTime;
+    private int bulletsNeeded = 0;
 
     #region - Start / Update -
     private void Start()
@@ -174,10 +175,6 @@ public class scr_WeaponController : MonoBehaviour
 
         // Load bullet settings
         ammoInMagazine--;
-        if (totalAmmo > 0)
-        {
-            totalAmmo--;
-        }
         
         if (ammoInMagazine <= 0)
         {
@@ -189,26 +186,23 @@ public class scr_WeaponController : MonoBehaviour
     #region - Reload -
     public void Reload()
     {
-        if (!isReloading)
+        if (!isReloading && totalAmmo != 0)
         {
+            // CALCULATE BULLETS NEEDED
+            bulletsNeeded = magazineSize - ammoInMagazine;
             isReloading = true;
-            // Checks if you have ammo left
-            if (totalAmmo == 0)
-            {
-                // Play a clicking sound and make the ammo turn red
-                return;
-            }
-            // If you don't have enough ammo for a full clip
-            else if (totalAmmo < magazineSize)
-            {
-                StartCoroutine(delayReloadOne());
 
-            }
-            else
+            if (bulletsNeeded > totalAmmo)
             {
-                StartCoroutine(delayReloadTwo());
                 
-
+                Debug.Log("Reload One");
+                StartCoroutine(delayReloadOne());
+            } 
+            else if (bulletsNeeded <= totalAmmo)
+            {
+                
+                Debug.Log("Reload Two");
+                StartCoroutine(delayReloadTwo());
             }
         }
         
@@ -330,7 +324,10 @@ public class scr_WeaponController : MonoBehaviour
     {
         magazineReload.Play();
         yield return new WaitForSeconds(2);
-        ammoInMagazine = totalAmmo;
+
+        ammoInMagazine += totalAmmo;
+        totalAmmo = 0;
+
         isReloading = false;
 
     }
@@ -339,8 +336,11 @@ public class scr_WeaponController : MonoBehaviour
     {
         magazineReload.Play();
         yield return new WaitForSeconds(2);
-        ammoInMagazine = magazineSize;
-        totalAmmo = totalAmmo - magazineSize;
+
+        ammoInMagazine += bulletsNeeded;
+        totalAmmo -= bulletsNeeded;
+        Debug.Log(totalAmmo);
+
         isReloading = false;
 
     }

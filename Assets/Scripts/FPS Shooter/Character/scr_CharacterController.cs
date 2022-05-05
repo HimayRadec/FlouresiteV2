@@ -475,7 +475,16 @@ public class scr_CharacterController : MonoBehaviour
 
             if (hitInfo.collider.GetComponent<scr_ammoBuy>() != null)
             {
-                Debug.Log("Collider Hit");
+                Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
+                //playerUI.UpdateText(interactable.promptMessage);
+
+                interactable.BaseInteract();
+
+
+            } 
+            else if (hitInfo.collider.GetComponent<scr_BuyDoor>() != null)
+            {
+                Debug.Log("BUY DOOR");
                 Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
                 //playerUI.UpdateText(interactable.promptMessage);
 

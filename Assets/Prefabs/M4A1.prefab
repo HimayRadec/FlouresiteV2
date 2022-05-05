@@ -5425,7 +5425,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 7690084134110140319}
   fleshImpact: {fileID: 1000010191825552, guid: 83e55d3418297934fab882559d009285, type: 3}
   nonFleshImpact: {fileID: 1000011190285628, guid: beb3acff7ab73944fb8f470f24d74ed3, type: 3}
-  weaponName: Heavy Gun
+  weaponName: M4A1
   settings:
     SwayAmount: 4
     SwayYInverted: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,6 +17,13 @@ public class scr_WeaponController : MonoBehaviour
     public Animator weaponAnimator;
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
+    public AudioSource bulletShot;
+    public AudioSource emptyShot;
+    public AudioSource magazineReload;
+
+    // Delete later
+    public UserInterface UI;
+        // ^
 
     // for ray casting
     public Camera fpsCam;
@@ -25,6 +33,7 @@ public class scr_WeaponController : MonoBehaviour
     public GameObject nonFleshImpact;
 
     [Header("Settings")]
+    public string weaponName;
     public WeaponSettingsModel settings;
     public bool isInitialised;
 
@@ -74,19 +83,23 @@ public class scr_WeaponController : MonoBehaviour
     public bool isShooting;
     [HideInInspector]
     private float nextTimeToFire;
+    [HideInInspector]
+    public bool isReloading = false;
 
     [Header("Ammo")]
     public int magazineSize;
     public int ammoInMagazine;
     public int totalAmmo;
+    public float reloadingTime;
 
     #region - Start / Update -
     private void Start()
     {
         newWeaponRotation = transform.localRotation.eulerAngles;
         currentFireType = allowedFireType.First();
+        UI.SetWeapon(weaponName);
 
-    }
+    }   
 
     private void Update()
     {
@@ -101,6 +114,8 @@ public class scr_WeaponController : MonoBehaviour
         CalculateAimingIn();
         CalculateShooting();
 
+        UI.SetAmmo(ammoInMagazine);
+        UI.SetMaxAmmo(totalAmmo);
 
 
     }
@@ -114,8 +129,17 @@ public class scr_WeaponController : MonoBehaviour
         if (isShooting && Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
-            muzzleFlash.Play();
-            RaycastShoot();
+            if (ammoInMagazine > 0)
+            {
+                if (!isReloading)
+                {
+                    RaycastShoot();
+                }
+            } 
+            else if (ammoInMagazine == 0 && !isReloading)
+            {
+                emptyShot.Play();
+            }
 
             /* 
              * MORE ADVANCED Shooting
@@ -129,6 +153,8 @@ public class scr_WeaponController : MonoBehaviour
 
     private void RaycastShoot()
     {
+        bulletShot.Play();
+        muzzleFlash.Play();
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
@@ -148,7 +174,44 @@ public class scr_WeaponController : MonoBehaviour
 
         // Load bullet settings
         ammoInMagazine--;
-        totalAmmo--;
+        if (totalAmmo > 0)
+        {
+            totalAmmo--;
+        }
+        
+        if (ammoInMagazine <= 0)
+        {
+            Reload();
+        }
+    }
+    #endregion
+
+    #region - Reload -
+    public void Reload()
+    {
+        if (!isReloading)
+        {
+            isReloading = true;
+            // Checks if you have ammo left
+            if (totalAmmo == 0)
+            {
+                // Play a clicking sound and make the ammo turn red
+                return;
+            }
+            // If you don't have enough ammo for a full clip
+            else if (totalAmmo < magazineSize)
+            {
+                StartCoroutine(delayReloadOne());
+
+            }
+            else
+            {
+                StartCoroutine(delayReloadTwo());
+                
+
+            }
+        }
+        
     }
 
     #endregion
@@ -262,5 +325,24 @@ public class scr_WeaponController : MonoBehaviour
         return new Vector3(Mathf.Sin(Time), A * Mathf.Sin(B * Time + Mathf.PI));
     }
     #endregion
+
+    IEnumerator delayReloadOne()
+    {
+        magazineReload.Play();
+        yield return new WaitForSeconds(2);
+        ammoInMagazine = totalAmmo;
+        isReloading = false;
+
+    }
+
+    IEnumerator delayReloadTwo()
+    {
+        magazineReload.Play();
+        yield return new WaitForSeconds(2);
+        ammoInMagazine = magazineSize;
+        totalAmmo = totalAmmo - magazineSize;
+        isReloading = false;
+
+    }
 
 }

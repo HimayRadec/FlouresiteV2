@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent agent;
     public GameObject player;
     public Animator anim;
+    public PlayerSettings playerSettings;
+
 
     [Header("Enemy Stats")]
     public float health;
@@ -121,8 +123,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health = health - damage;
+        playerSettings.points += 10;
         if (health <= 0)
         {
+            playerSettings.points += 100;
             Destroy(gameObject);
         }
     }

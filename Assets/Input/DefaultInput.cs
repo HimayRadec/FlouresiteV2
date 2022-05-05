@@ -265,6 +265,15 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""8ab7968f-8328-4422-b7d2-d4d607ecac08"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -311,6 +320,17 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""action"": ""Fire1Released"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08a658ae-84fa-4b96-a19c-793e0631567b"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -332,6 +352,7 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         m_Weapon_Fire2Released = m_Weapon.FindAction("Fire2Released", throwIfNotFound: true);
         m_Weapon_Fire1Pressed = m_Weapon.FindAction("Fire1Pressed", throwIfNotFound: true);
         m_Weapon_Fire1Released = m_Weapon.FindAction("Fire1Released", throwIfNotFound: true);
+        m_Weapon_Reload = m_Weapon.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -476,6 +497,7 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Weapon_Fire2Released;
     private readonly InputAction m_Weapon_Fire1Pressed;
     private readonly InputAction m_Weapon_Fire1Released;
+    private readonly InputAction m_Weapon_Reload;
     public struct WeaponActions
     {
         private @DefaultInput m_Wrapper;
@@ -484,6 +506,7 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         public InputAction @Fire2Released => m_Wrapper.m_Weapon_Fire2Released;
         public InputAction @Fire1Pressed => m_Wrapper.m_Weapon_Fire1Pressed;
         public InputAction @Fire1Released => m_Wrapper.m_Weapon_Fire1Released;
+        public InputAction @Reload => m_Wrapper.m_Weapon_Reload;
         public InputActionMap Get() { return m_Wrapper.m_Weapon; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -505,6 +528,9 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @Fire1Released.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire1Released;
                 @Fire1Released.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire1Released;
                 @Fire1Released.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire1Released;
+                @Reload.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnReload;
             }
             m_Wrapper.m_WeaponActionsCallbackInterface = instance;
             if (instance != null)
@@ -521,6 +547,9 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @Fire1Released.started += instance.OnFire1Released;
                 @Fire1Released.performed += instance.OnFire1Released;
                 @Fire1Released.canceled += instance.OnFire1Released;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
             }
         }
     }
@@ -541,5 +570,6 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         void OnFire2Released(InputAction.CallbackContext context);
         void OnFire1Pressed(InputAction.CallbackContext context);
         void OnFire1Released(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

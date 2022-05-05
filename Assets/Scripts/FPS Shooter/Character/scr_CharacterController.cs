@@ -107,6 +107,10 @@ public class scr_CharacterController : MonoBehaviour
         defaultInput.Weapon.Fire1Pressed.performed += e => RaycastShootingPressed();
         defaultInput.Weapon.Fire1Released.performed += e => RaycastShootingReleased();
 
+        // Reloading
+        defaultInput.Weapon.Reload.performed += e => Reload();
+
+
         // input is now enabled
         defaultInput.Enable();
 
@@ -137,6 +141,14 @@ public class scr_CharacterController : MonoBehaviour
         CalculateStance();
         CalculateAimingIn();
 
+    }
+    #endregion
+
+    #region - Reload -
+
+    private void Reload()
+    {
+        currentWeapon.Reload();
     }
     #endregion
 

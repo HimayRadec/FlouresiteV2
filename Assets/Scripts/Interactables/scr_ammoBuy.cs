@@ -5,13 +5,14 @@ using UnityEngine;
 public class scr_ammoBuy : Interactable
 {
     public PlayerSettings playerStats;
-    public scr_CharacterController weaponInHand;
+    public scr_CharacterController characterController;
+    AudioSource purchaseSuccessful;
 
-    private int ammoCost;
+    public int ammoCost;
     // Start is called before the first frame update
     void Start()
     {
-        
+        purchaseSuccessful = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -22,9 +23,13 @@ public class scr_ammoBuy : Interactable
 
     protected override void Interact()
     {
+        Debug.Log("Ammo Bought Attemtped");
+
         if (playerStats.points >= ammoCost)
         {
-            weaponInHand.weaponInHand.totalAmmo += weaponInHand.weaponInHand.magazineSize;
+            characterController.currentWeapon.totalAmmo += characterController.weaponInHand.magazineSize;
+            playerStats.points -= ammoCost;
+            purchaseSuccessful.Play();
         }
     }
 }
